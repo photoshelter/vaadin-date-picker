@@ -52,6 +52,7 @@
       #monthGrid div:not(:empty):not([disabled]):not(.weekday):not(.weeknumber):active {
         background: var(--light-primary-color);
         border-radius: 2px;
+		  @apply(--vaadin-date-picker-calender-cell-active);
       }
 
       #monthGrid div.weekday {
@@ -85,6 +86,7 @@
         border-radius: 2px;
         @apply(--vaadin-date-picker-calendar-cell-focused);
       }
+
 
       :host([focused]) #monthGrid div[focused] {
         background: var(--primary-color);
