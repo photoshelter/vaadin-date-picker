@@ -87,8 +87,12 @@
         @apply(--vaadin-date-picker-calendar-cell-focused);
       }
 
+	  #monthGrid div[hover] {
+		  @apply(--vaadin-date-picker-calendar-cell-hover);
+	  }
 
-      :host([focused]) #monthGrid div[focused] {
+
+	  :host([focused]) #monthGrid div[focused] {
         background: var(--primary-color);
         color: var(--primary-background-color);
         @apply(--vaadin-date-picker-calendar-focused-cell-focused);
