@@ -587,7 +587,9 @@
     _focusAndSelect: function() {
       if (!this._noInput) {
         this._focus();
-        this.inputElement.setSelectionRange(0, this._inputValue.length);
+        if (this.inputElement.setSelectionRange) {
+          this.inputElement.setSelectionRange(0, this._inputValue.length);
+        }
       }
     },
 
@@ -655,7 +657,9 @@
           if (this.opened) {
             e.preventDefault();
             // Clear the selection range (remains visible on IE)
-            this.inputElement.setSelectionRange(0, 0);
+            if (this.inputElement.setSelectionRange) {
+              this.inputElement.setSelectionRange(0, 0);
+            }
             if (e.shiftKey) {
               this.$.overlay.focusCancel();
             } else {
