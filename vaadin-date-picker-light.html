@@ -52,10 +52,21 @@ need to define the name of value property using the `attrForValue` property.
       #overlay {
         height: 100vh;
         width: 365px;
+        z-index: 1;
+      }
+
+      #header {
+        box-sizing: border-box;
+        height: 64px;
+        width: 365px;
+        padding: 10px 15px;
+        background-color: white;
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+        z-index: 10;
       }
 
     </style>
-    <content></content>
+    <slot name="input"></slot>
 
     <iron-dropdown
         id="dropdown"
@@ -66,7 +77,14 @@ need to define the name of value property using the `attrForValue` property.
         on-iron-overlay-canceled="_preventCancelOnComponentAccess"
         opened="{{opened}}"
         no-auto-focus>
-      <vaadin-date-picker-overlay
+        <template is="dom-if" if="[[_hasDistributedButtons]]">
+          <div
+            id="header"
+            class="dropdown-content">
+            <slot name="buttons"></slot>
+          </div>
+        </template>
+        <vaadin-date-picker-overlay
         id="overlay" i18n="[[i18n]]"
         fullscreen$=[[_fullscreen]]
         label=[[label]]
@@ -77,6 +95,7 @@ need to define the name of value property using the `attrForValue` property.
         max-date="[[_maxDate]]"
         role="dialog">
       </vaadin-date-picker-overlay>
+
     </iron-dropdown>
 
     <iron-media-query
@@ -103,6 +122,14 @@ need to define the name of value property using the `attrForValue` property.
         {
           type: String,
           value: 'bind-value'
+        },
+        _hasDistributedButtons: {
+          type: Boolean,
+          value: function () {
+            var children = this.queryEffectiveChildren('ps-ring-button');
+            console.log(children);
+            return true;
+          }
         }
       },
 
