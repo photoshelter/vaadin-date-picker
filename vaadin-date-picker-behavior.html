@@ -330,7 +330,7 @@
       }
     },
 
-    _close: function(e) {
+    _close: function(e) { 
       if (e) {
         e.stopPropagation();
       }
@@ -545,6 +545,9 @@
         } else {
           this._selectedDate = null;
           this._inputValue = inputValue;
+          if (inputValue !== '') {
+            this.fire('invalid-date');
+          } 
         }
       } else if (this._focusedDate) {
         this._selectedDate = this._focusedDate;
@@ -644,7 +647,7 @@
 
           break;
         case 'enter':
-          if (this.$.overlay.focusedDate) {
+          if (this.$.overlay.focusedDate && document.activeElement === this) {
             this._selectedDate = this.$.overlay.focusedDate;
           }
           this.close();
