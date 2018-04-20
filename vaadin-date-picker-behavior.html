@@ -546,7 +546,7 @@
           this._selectedDate = null;
           this._inputValue = inputValue;
           if (inputValue !== '') {
-            this.fire('invalid-date');
+            this.fire('invalid-date', {value: inputValue});
           } 
         }
       } else if (this._focusedDate) {
