@@ -248,6 +248,10 @@
         clip: rect(0, 0, 0, 0);
         clip-path: inset(100%);
       }
+      
+      #month {
+        margin: 0 auto;
+      }
     </style>
 
     <div id="announcer" role="alert" aria-live="polite">
@@ -273,6 +277,7 @@
       <vaadin-infinite-scroller id="scroller" on-custom-scroll="_onMonthScroll" on-touchstart="_onMonthScrollTouchStart" item-height="300" buffer-size="6" active="[[initialPosition]]">
         <template>
           <vaadin-month-calendar
+            id="month"
             i18n="[[i18n]]"
             month="[[_dateAfterXMonths(index)]]"
             selected-date="{{selectedDate}}"

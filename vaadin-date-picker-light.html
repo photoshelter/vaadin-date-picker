@@ -56,6 +56,7 @@ need to define the name of value property using the `attrForValue` property.
       }
 
       #header {
+        display: none;
         box-sizing: border-box;
         height: 64px;
         width: 420px;
@@ -63,6 +64,11 @@ need to define the name of value property using the `attrForValue` property.
         background-color: white;
         box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
         z-index: 10;
+        position: relative;
+      }
+
+      #header.with-button {
+        display: block;
       }
 
     </style>
@@ -77,13 +83,11 @@ need to define the name of value property using the `attrForValue` property.
         on-iron-overlay-canceled="_preventCancelOnComponentAccess"
         opened="{{opened}}"
         no-auto-focus>
-        <template is="dom-if" if="[[_hasDistributedButtons]]">
-          <div
-            id="header"
-            class="dropdown-content">
-            <slot name="buttons"></slot>
-          </div>
-        </template>
+        <div
+          id="header"
+          class="dropdown-content">
+          <slot name="buttons" id="buttons"></slot>
+        </div>
         <vaadin-date-picker-overlay
         id="overlay" i18n="[[i18n]]"
         fullscreen$=[[_fullscreen]]
@@ -123,19 +127,28 @@ need to define the name of value property using the `attrForValue` property.
           type: String,
           value: 'bind-value'
         },
-        _hasDistributedButtons: {
-          type: Boolean,
-          value: function () {
-            var children = this.queryEffectiveChildren('ps-ring-button');
-            console.log(children);
-            return true;
-          }
-        }
       },
 
       listeners:
       {
         'input': '_userInputValueChanged'
+      },
+
+      ready: function() {
+        var _boundNodeObserverHandler = this._headerVisibilityToggle.bind(this);
+        // Observe nodes added/removed from the slot in header
+        this._buttonObserver = Polymer.dom(this.$.header).observeNodes(_boundNodeObserverHandler);
+      },
+
+      /**
+       * Toggle class on the header if a button is or isn't slotted into the header
+       **/
+      _headerVisibilityToggle: function(nodes) {
+        if (nodes.addedNodes.length > 0) {
+          this.$.header.classList.add('with-button');
+        } else {
+          this.$.header.classList.remove('with-button');
+        }
       },
 
       _input: function()
