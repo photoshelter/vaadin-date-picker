@@ -56,7 +56,7 @@ need to define the name of value property using the `attrForValue` property.
       }
 
       #header {
-        display: none;
+        display: block;
         box-sizing: border-box;
         height: 64px;
         width: 420px;
@@ -67,8 +67,8 @@ need to define the name of value property using the `attrForValue` property.
         position: relative;
       }
 
-      #header.with-button {
-        display: block;
+      #header[hidden] {
+        display: none;
       }
 
     </style>
@@ -85,7 +85,8 @@ need to define the name of value property using the `attrForValue` property.
         no-auto-focus>
         <div
           id="header"
-          class="dropdown-content">
+          class="dropdown-content"
+          hidden$=[[!_hasDistributedChildren]]>
           <slot name="buttons" id="buttons"></slot>
         </div>
         <vaadin-date-picker-overlay
@@ -127,6 +128,14 @@ need to define the name of value property using the `attrForValue` property.
           type: String,
           value: 'bind-value'
         },
+        /**
+         * Flag detailing the existence of a button in the buttons slot of the header.
+         * Manages visibility of the datepicker header.
+         */
+        _hasDistributedChildren: {
+          type: Boolean,
+          value: false
+        }
       },
 
       listeners:
@@ -145,9 +154,9 @@ need to define the name of value property using the `attrForValue` property.
        **/
       _headerVisibilityToggle: function(nodes) {
         if (nodes.addedNodes.length > 0) {
-          this.$.header.classList.add('with-button');
+          this.set('_hasDistributedChildren', true);
         } else {
-          this.$.header.classList.remove('with-button');
+          this.set('_hasDistributedChildren', false);
         }
       },
 

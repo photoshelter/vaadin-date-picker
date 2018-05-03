@@ -659,14 +659,29 @@
         case 'tab':
           if (this.opened) {
             e.preventDefault();
+            var button = this.queryEffectiveChildren('ps-ring-button-solid')
+
+            var focusTarget = this.$.overlay;
+            if (this._hasDistributedChildren) {
+              if (document.activeElement == this.inputElement.$$('input')) {
+                focusTarget = button;
+              }
+            }
             // Clear the selection range (remains visible on IE)
             if (this.inputElement.setSelectionRange) {
               this.inputElement.setSelectionRange(0, 0);
             }
             if (e.shiftKey) {
-              this.$.overlay.focusCancel();
-            } else {
-              this.$.overlay.focus();
+              if (document.activeElement === this.$.overlay) {
+                focusTarget = button.$$('button');
+              } else if (document.activeElement === button.$$('button')) {
+                focusTarget = this.inputElement.$.input;
+              }
+              this.fire('focus', {}, {node: focusTarget});
+            } 
+            
+            focusTarget.focus();  
+            if (focusTarget === this.$.overlay) {
               this.$.overlay.revealDate(this._focusedDate);
             }
 
