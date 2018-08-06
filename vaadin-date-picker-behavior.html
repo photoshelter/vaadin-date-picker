@@ -188,33 +188,70 @@
             today: 'Today',
             cancel: 'Cancel',
             formatDate: function(d) {
-              var year = d.getFullYear();
-              var yearString = year.toString();
-              if (yearString.length < 3 && year >= 0) {
-                yearString = (year < 10 ? '000' : '00') + year;
-              }
-              return (d.getMonth() + 1) + '/' + d.getDate() + '/' + yearString;
+              var dateArr = d.toString().split(' ');
+              var dateStr = dateArr[2] + ' ' + dateArr [1] + ' ' + dateArr[3];
+              return dateStr;
             },
             parseDate: function(text) {
-              var parts = text.split('/');
+              console.log('text', text);
+              var dateRegEx = /(^\d{1,2}$)/;
+              var monthRegEx = /([a-zA-Z]+|^\d{1,2}$)/;
+              if(text === '') {
+                window.dispatchEvent(new CustomEvent('date-input-cleared'));
+                return false;
+              }
+              var parts;
+              if (text.indexOf('/') !== -1) {
+                parts = text.split('/');
+              } else if (text.indexOf('-') !== -1) {
+                parts = text.split('-');
+              } else {
+                parts = text.split(' ');
+              }
+              if (!dateRegEx.test(parts[0])) {
+                window.dispatchEvent(new CustomEvent('invalid-date', {value: text}));
+                return false;
+              }
+              if (!!parts[1]) {
+                if (!monthRegEx.test(parts[1])) {
+                  window.dispatchEvent(new CustomEvent('invalid-date', {value: text}));
+                  return false;
+                }
+              }
               var today = new Date();
               var date, month = today.getMonth(), year = today.getFullYear();
+              var getMonthIndex = (monthInput) => {
+                var inputMonthName = this.monthNames.find(function(monthName){
+                  return monthName.toLowerCase().indexOf(monthInput.toLowerCase()) === 0;
+                });
+                return this.monthNames.indexOf(inputMonthName);
+              }
 
+              var getMonth = (month) => {
+                if (isNaN(parseInt(month))) {
+                  return getMonthIndex(month);
+                } else {
+                  if (month > 12) {
+                    month = month % 12;
+                  }
+                  return parseInt(month) - 1;
+                }
+              }
+        
               if (parts.length === 3) {
                 year = parseInt(parts[2]);
                 if (parts[2].length < 3 && year >= 0) {
                   year += year < 50 ? 2000 : 1900;
                 }
-                month = parseInt(parts[0]) - 1;
-                date = parseInt(parts[1]);
+                month = getMonth(parts[1]);
+                date = parseInt(parts[0]);
               } else if (parts.length === 2) {
-                month = parseInt(parts[0]) - 1;
-                date = parseInt(parts[1]);
+                month = getMonth(parts[1]);
+                date = parseInt(parts[0]);
               } else if (parts.length === 1) {
                 date = parseInt(parts[0]);
               }
-
-              if (date !== undefined) {
+              if (typeof date !== 'undefined') {
                 var result = new Date(0, 0); // Wrong date (1900-01-01), but with midnight in local time
                 result.setFullYear(year);
                 result.setMonth(month);
