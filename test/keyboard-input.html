@@ -98,14 +98,14 @@
         });
 
         it('should focus parsed date', function() {
-          inputText('1/20/2000');
+          inputText('20/1/2000');
 
           expect(focusedDate().getMonth()).to.equal(0);
           expect(focusedDate().getDate()).to.equal(20);
         });
 
         it('should update focus on input change', function() {
-          inputText('1/20/20');
+          inputText('20/1/20');
           inputText('17');
 
           expect(focusedDate().getMonth()).to.equal(0);
@@ -193,7 +193,7 @@
 
           datepicker.addEventListener('iron-overlay-opened', function() {
             arrowDown();
-            expect(datepicker._inputValue).to.equal('1/8/2000');
+            expect(datepicker._inputValue).to.equal('08 Jan 2000');
             done();
           });
           arrowDown();
@@ -215,7 +215,7 @@
             arrowDown();
             target = overlay;
             arrowDown();
-            expect(datepicker._inputValue).to.equal('1/15/2000');
+            expect(datepicker._inputValue).to.equal('15 Jan 2000');
             done();
           });
           arrowDown();
@@ -332,7 +332,7 @@
               arrowDown();
               arrowDown();
               esc();
-              expect(target.value).to.equal('1/1/2000');
+              expect(target.value).to.equal('01 Jan 2000');
               done();
             });
           });
@@ -396,7 +396,7 @@
           });
 
           it('should parse two digits', function() {
-            inputText('6/20');
+            inputText('20/6');
             var result = focusedDate();
             expect(result.getFullYear()).to.equal(today.getFullYear());
             expect(result.getMonth()).to.equal(5);
@@ -404,7 +404,7 @@
           });
 
           it('should parse three digits', function() {
-            inputText('6/20/1999');
+            inputText('20/6/1999');
             var result = focusedDate();
             expect(result.getFullYear()).to.equal(1999);
             expect(result.getMonth()).to.equal(5);
