@@ -208,12 +208,12 @@
                 parts = text.split(' ');
               }
               if (!dateRegEx.test(parts[0])) {
-                window.dispatchEvent(new CustomEvent('invalid-date', {value: text}));
+                window.dispatchEvent(new CustomEvent('invalid-date', {"detail":{value: text}}));
                 return false;
               }
               if (!!parts[1]) {
                 if (!monthRegEx.test(parts[1])) {
-                  window.dispatchEvent(new CustomEvent('invalid-date', {value: text}));
+                  window.dispatchEvent(new CustomEvent('invalid-date', {"detail":{value: text}}));
                   return false;
                 }
               }
