@@ -51,11 +51,28 @@ need to define the name of value property using the `attrForValue` property.
 
       #overlay {
         height: 100vh;
-        width: 365px;
+        width: 420px;
+        z-index: 1;
+      }
+
+      #header {
+        display: block;
+        box-sizing: border-box;
+        height: 64px;
+        width: 420px;
+        padding: 10px 15px;
+        background-color: white;
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12), 0 3px 1px -2px rgba(0,0,0,.2);
+        z-index: 10;
+        position: relative;
+      }
+
+      #header[hidden] {
+        display: none;
       }
 
     </style>
-    <content></content>
+    <slot name="input"></slot>
 
     <iron-dropdown
         id="dropdown"
@@ -66,17 +83,24 @@ need to define the name of value property using the `attrForValue` property.
         on-iron-overlay-canceled="_preventCancelOnComponentAccess"
         opened="{{opened}}"
         no-auto-focus>
-      <vaadin-date-picker-overlay
+        <div
+          id="header"
+          slot="dropdown-content"
+          hidden$=[[!_hasDistributedChildren]]>
+          <slot name="buttons" id="buttons"></slot>
+        </div>
+        <vaadin-date-picker-overlay
         id="overlay" i18n="[[i18n]]"
         fullscreen$=[[_fullscreen]]
         label=[[label]]
         selected-date="{{_selectedDate}}"
-        class="dropdown-content"
+        slot="dropdown-content"
         focused-date="{{_focusedDate}}"
         min-date="[[_minDate]]"
         max-date="[[_maxDate]]"
         role="dialog">
       </vaadin-date-picker-overlay>
+
     </iron-dropdown>
 
     <iron-media-query
@@ -103,12 +127,37 @@ need to define the name of value property using the `attrForValue` property.
         {
           type: String,
           value: 'bind-value'
+        },
+        /**
+         * Flag detailing the existence of a button in the buttons slot of the header.
+         * Manages visibility of the datepicker header.
+         */
+        _hasDistributedChildren: {
+          type: Boolean,
+          value: false
         }
       },
 
       listeners:
       {
         'input': '_userInputValueChanged'
+      },
+
+      ready: function() {
+        var _boundNodeObserverHandler = this._headerVisibilityToggle.bind(this);
+        // Observe nodes added/removed from the slot in header
+        this._buttonObserver = Polymer.dom(this.$.header).observeNodes(_boundNodeObserverHandler);
+      },
+
+      /**
+       * Toggle class on the header if a button is or isn't slotted into the header
+       **/
+      _headerVisibilityToggle: function(nodes) {
+        if (nodes.addedNodes.length > 0) {
+          this.set('_hasDistributedChildren', true);
+        } else {
+          this.set('_hasDistributedChildren', false);
+        }
       },
 
       _input: function()
