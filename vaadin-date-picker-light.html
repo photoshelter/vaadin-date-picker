@@ -160,23 +160,19 @@ need to define the name of value property using the `attrForValue` property.
         }
       },
 
-      _input: function()
-      {
+      _input: function() {
         // Using the same selector than in combo-box.
         // TODO: revisit this to decide the selector and document conveniently.
         return Polymer.dom(this).querySelector('input[is="iron-input"],paper-input,.paper-input-input,.input,ps-text-input');
       },
 
-      set _inputValue(value)
-      {
-        if (this.inputElement)
-        {
+      set _inputValue(value) {
+        if (this.inputElement) {
           this.inputElement[Polymer.CaseMap.dashToCamelCase(this.attrForValue)] = value;
         }
       },
 
-      get _inputValue()
-      {
+      get _inputValue() {
         return this.inputElement && this.inputElement[Polymer.CaseMap.dashToCamelCase(this.attrForValue)];
       }
     });
