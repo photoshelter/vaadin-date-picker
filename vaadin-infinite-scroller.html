@@ -39,7 +39,7 @@ This program is available under Apache License Version 2.0, available at https:/
         width: 100%;
         box-sizing: border-box;
         padding-right: 40px;
-        @apply(--vaadin-infinite-scroller-buffer);
+        @apply --vaadin-infinite-scroller-buffer;
       }
 
       :host(:not([init-animation-done])) .buffer > * {
@@ -156,7 +156,8 @@ This program is available under Apache License Version 2.0, available at https:/
 
     ready: function() {
       this._bufferHeight = this.itemHeight * this.bufferSize;
-      this._buffers = Polymer.dom(this.root).querySelectorAll('.buffer');
+      let nodes = Polymer.dom(this.root).querySelectorAll('.buffer');
+      this._buffers = [].slice.call(nodes);
 
       this.$.fullHeight.style.height = this._initialScroll * 2 + 'px';
 
@@ -332,7 +333,7 @@ This program is available under Apache License Version 2.0, available at https:/
      * Called as side-effect of a host property change, responsible for
      * notifying parent path change on each row.
      */
-    _forwardParentProp: function(prop, value) {
+    _forwardHostPropV2: function(prop, value) {
       if (prop !== 'index') {
         this._buffers.forEach(function(buffer) {
           [].forEach.call(buffer.children, function(itemWrapper) {
@@ -347,7 +348,7 @@ This program is available under Apache License Version 2.0, available at https:/
      * Called as side-effect of a host path change, responsible for
      * notifying parent.<path> path change on each row.
      */
-    _forwardParentPath: function(prop, value) {
+     _notifyInstancePropV2: function(inst, prop, value) {
       if (prop !== 'index') {
         this._buffers.forEach(function(buffer) {
           [].forEach.call(buffer.children, function(itemWrapper) {
