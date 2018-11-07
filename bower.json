@@ -27,7 +27,7 @@
     "iron-validatable-behavior": "PolymerElements/iron-validatable-behavior#^2.1.0",
     "paper-input": "polymerelements/paper-input#^2.2.3",
     "paper-button": "polymerelements/paper-button#^2.1.3",
-    "polymer": "Polymer/polymer#^2.0.0",
+    "polymer": "Polymer/polymer#1.9 - 2",
     "paper-styles": "polymerelements/paper-styles#^2.1.0",
     "iron-media-query": "polymerelements/iron-media-query#^2.1.0",
     "paper-ripple": "polymerelements/paper-ripple#^2.1.1",
