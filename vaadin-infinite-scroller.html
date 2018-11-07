@@ -333,7 +333,7 @@ This program is available under Apache License Version 2.0, available at https:/
      * Called as side-effect of a host property change, responsible for
      * notifying parent path change on each row.
      */
-    _forwardHostPropV2: function(prop, value) {
+     _forwardParentProp: function(prop, value) {
       if (prop !== 'index') {
         this._buffers.forEach(function(buffer) {
           [].forEach.call(buffer.children, function(itemWrapper) {
@@ -342,13 +342,19 @@ This program is available under Apache License Version 2.0, available at https:/
         });
       }
     },
+    /**
+     * Polymer 2 templatizer compatible wrapper for the _forwardParentProp
+     */
+    _forwardHostPropV2: function(prop, value) {
+      this._forwardParentProp(prop,value);
+    },
 
     /**
      * Implements extension point from Templatizer
      * Called as side-effect of a host path change, responsible for
      * notifying parent.<path> path change on each row.
      */
-     _notifyInstancePropV2: function(inst, prop, value) {
+     _forwardParentPath: function(inst, prop, value) {
       if (prop !== 'index') {
         this._buffers.forEach(function(buffer) {
           [].forEach.call(buffer.children, function(itemWrapper) {
@@ -356,7 +362,7 @@ This program is available under Apache License Version 2.0, available at https:/
           });
         });
       }
-    }
+    },
 
   });
 </script>
