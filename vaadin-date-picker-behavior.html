@@ -195,7 +195,7 @@
             parseDate: function(text) {
               var dateRegEx = /(^\d{1,2}$)/;
               var monthRegEx = /([a-zA-Z]+|^\d{1,2}$)/;
-              if(text === '') {
+              if(text === '' || typeof text === 'undefiend') {
                 window.dispatchEvent(new CustomEvent('date-input-cleared'));
                 return false;
               }
