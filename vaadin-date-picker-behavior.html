@@ -195,7 +195,7 @@
             parseDate: function(text) {
               var dateRegEx = /(^\d{1,2}$)/;
               var monthRegEx = /([a-zA-Z]+|^\d{1,2}$)/;
-              if(text === '' || typeof text === 'undefiend') {
+              if(text === '' || typeof text === 'undefined') {
                 window.dispatchEvent(new CustomEvent('date-input-cleared'));
                 return false;
               }
@@ -236,7 +236,7 @@
                   return parseInt(month) - 1;
                 }
               }
-        
+
               if (parts.length === 3) {
                 year = parseInt(parts[2]);
                 if (parts[2].length < 3 && year >= 0) {
@@ -366,7 +366,7 @@
       }
     },
 
-    _close: function(e) { 
+    _close: function(e) {
       if (e) {
         e.stopPropagation();
       }
@@ -583,7 +583,7 @@
           this._inputValue = inputValue;
           if (inputValue !== '') {
             this.fire('invalid-date', {value: inputValue});
-          } 
+          }
         }
       } else if (this._focusedDate) {
         this._selectedDate = this._focusedDate;
@@ -714,9 +714,9 @@
                 focusTarget = this.inputElement.$.input;
               }
               this.fire('focus', {}, {node: focusTarget});
-            } 
-            
-            focusTarget.focus();  
+            }
+
+            focusTarget.focus();
             if (focusTarget === this.$.overlay) {
               this.$.overlay.revealDate(this._focusedDate);
             }
